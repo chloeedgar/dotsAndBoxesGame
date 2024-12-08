@@ -75,6 +75,7 @@ public class GameSession {
 
     public boolean isGameOver() {
         // Check if all boxes are completed
+        //ToDo
 
         return false; // Placeholder
     }
@@ -87,5 +88,38 @@ public class GameSession {
         return board;
     }
 
+    public void makeMove(String move) {
+        // Parse the move into column and row
+        char columnChar = move.charAt(0);  // Column (A-G)
+        int row = Character.getNumericValue(move.charAt(1)) +1; // Second character is the row (1-7), adjusting for 0-indexing
+
+        // Convert column letter (A-G) to a column index (0-6)
+        int column = columnChar - 'A' + 1;  // Adjust column: 'A' -> 1, 'B' -> 2, ..., 'G' -> 7
+
+        updateBoard(row, column);
+
+        checkForCompletedBoxes(row, column);
+
+        switchPlayer();
+    }
+
+    private void switchPlayer() {
+        currentPlayer = (currentPlayer == 1) ? 2 : 1;
+    }
+
+    private void checkForCompletedBoxes(int row, int column) {
+        System.out.println("check completed boxes");
+        //ToDo
+    }
+
+    private void updateBoard(int row, int column) {
+        System.out.println("Update board");
+        //ToDo
+        
+    }
+
+    public int getBoardSize() {
+        return boardSize;
+    }
 }
 

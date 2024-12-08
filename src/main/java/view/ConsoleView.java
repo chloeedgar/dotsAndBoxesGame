@@ -17,8 +17,6 @@ public class ConsoleView implements GameView{
     }
 
     public void renderBoard(char[][] board) {
-        //int boardSize = gameSession.getBoardSize();
-
         for (char[] row : board) {
             for (char cell : row) {
                 System.out.print(cell);

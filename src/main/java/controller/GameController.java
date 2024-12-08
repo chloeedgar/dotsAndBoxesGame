@@ -19,33 +19,83 @@ public class GameController {
         view.renderBoard(gameSession.getBoard());
 
         while (!gameSession.isGameOver()) {
-
             view.renderScores(gameSession.getPlayer1Score(), gameSession.getPlayer2Score());
 
-            view.displayMessage("Player " + (gameSession.getCurrentPlayer()) + ", input a move <column><row> (or 'Q' to quit): ");
+            String move = getValidMove();
 
-            String move = view.getMove();
             if (move.equals("Q")) {
                 view.displayMessage("Thanks for playing! Goodbye!");
                 gameSession.setGameOver(true);
                 break;
             }
+
+            gameSession.makeMove(move);
             view.renderBoard(gameSession.getBoard());
 
-            view.displayMessage("Invalid move. Please try again.");
+        }
+    }
+
+    private String getValidMove() {
+        String move;
+        do {
+            view.displayMessage("Player " + (gameSession.getCurrentPlayer()) + ", input a move <column><row> (or 'Q' to quit): ");
             move = view.getMove();
 
+            if (move.equals("Q")) {
+                return move;  // Player chooses to quit
+            }
 
+            if (isMoveValid(move)) {
+                break;
+            }
 
+            view.displayMessage("Invalid move. Please try again.");
+        } while (true);
 
+        return move;
+    }
+
+    private boolean isMoveValid(String move) {
+        int boardSize = gameSession.getBoardSize();
+
+        if (move.length() != 2) {
+            return false;
         }
+
+        //validate it is a letter then a number
+
+
+        // Extract column and row from the move
+        char columnChar = move.charAt(0); // First character is the column
+        // Convert the column letter to column index
+        int column = columnChar - 'A' + 1;  // Adjust column: 'A' -> 1, 'B' -> 2, ..., 'G' -> 7
+
+
+        int row;
+        try {
+            row = Character.getNumericValue(move.charAt(1)) +1; // Second character is the row, add 1
+        } catch (NumberFormatException e) {
+            view.displayMessage("....");
+            return false; // If row is not a valid number
+        }
+
+        int maxColumn = boardSize - 1; // Calculate last column based on board size
+        if (column < 0 || column > maxColumn) {
+            return false; // Column is out of valid range
+        }
+
+        // Validate row range (0-based)
+        if (row < 0 || row >= boardSize) {
+            return false; // Row is out of valid range
+        }
+
+        // Check if the move is unoccupied
+        return isUnoccupied(row, column);
 
     }
 
-
-
-    private boolean isMoveValid(String move) {
-        //ToDo
-        return true;
+    private boolean isUnoccupied(int row, int col) {
+        // Assume a placeholder character like ' ' indicates an unoccupied position
+        return gameSession.getBoard()[row][col] == ' ';
     }
 }
