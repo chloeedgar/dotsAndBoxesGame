@@ -1,5 +1,7 @@
 package model;
 
+import utils.BoardInitializer;
+
 public class GameSession {
 
     private int boardSize;
@@ -13,53 +15,10 @@ public class GameSession {
 
     public GameSession(int gridOfDotsSize) {
         this.boardSize = gridOfDotsSize*2-1;
-        this.board = initializeBoard();
+        this.board = BoardInitializer.initializeBoard(boardSize);
         this.scores = new int[2];
         this.currentPlayer = 1; // Player 1 starts
     }
-
-    private char[][] initializeBoard() {
-        //Rules for a 4x4 grid of dots
-        // First row is space then A-G for 4x4 grid (7 letters = 8-1)
-        // First column is space then 0 to 6
-        // the grid (not including first column and first row) consists of
-        // *'s in every other square for even row numbers
-        // ' ' (spaces) in every odd row
-
-        //int boardSize = gridSize * 2; // Includes spaces for lines
-        char[][] board = new char[boardSize + 1][boardSize + 1];
-
-        System.out.println("board size is: " + board.length);
-
-
-        // Fill column labels (A-G) in the first row
-        //LHS upper corner is a space
-        board[0][0] = ' ';
-
-        for (int col = 1; col <= boardSize; col++) {
-            board[0][col] = (char) ('A' + col - 1);  // This is the key part to set letters from 'A' to 'G'
-        }
-
-        //2nd row onwards
-        for (int row = 1; row <= boardSize; row++) {
-            board[row][0] = (char) ('0' + row -1); // Assign row number (0 to 6) in the first column
-            board[row][1] = ' '; // Add a space after the number for alignment
-
-            if (row % 2 == 1) { // Odd-numbered rows (contain stars and spaces)
-                for (int col = 1; col <= boardSize; col++) {
-                    board[row][col] = (col % 2 == 1) ? '*' : ' '; // Alternate stars and spaces
-                }
-            } else { // Even-numbered rows (only spaces between lines)
-                for (int col = 1; col <= boardSize; col++) {
-                    board[row][col] = ' '; // Fill entire row with spaces
-                }
-            }
-        }
-
-
-        return board;
-    }
-
 
     public int getCurrentPlayer() {
         return currentPlayer;
@@ -98,17 +57,21 @@ public class GameSession {
 
         updateBoard(row, column);
 
-        checkForCompletedBoxes(row, column);
+        int completedSquares = checkForCompletedBoxes(row, column);
 
-        switchPlayer();
+        if (completedSquares > 0){
+            scores[currentPlayer -1] += completedSquares; // Award points
+        }
+
     }
 
-    private void switchPlayer() {
+    public void switchPlayer() {
         currentPlayer = (currentPlayer == 1) ? 2 : 1;
     }
 
-    private void checkForCompletedBoxes(int row, int column) {
-        System.out.println("check completed boxes");
+    private int checkForCompletedBoxes(int row, int column) {
+        System.out.println("check for completed boxes");
+        return  0; //placeholder
         //ToDo
     }
 
@@ -125,6 +88,16 @@ public class GameSession {
 
     public int getBoardSize() {
         return boardSize;
+    }
+
+    private boolean isHorizontalMove(int row, int column) {
+        // Horizontal moves occur on odd-numbered rows and even-numbered columns
+        return row % 2 == 1 && column % 2 == 0;
+    }
+
+    private boolean isVerticalMove(int row, int column) {
+        // Vertical moves occur on even-numbered rows and odd-numbered columns
+        return row % 2 == 0 && column % 2 == 1;
     }
 }
 
