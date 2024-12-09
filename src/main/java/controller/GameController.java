@@ -56,25 +56,27 @@ public class GameController {
     }
 
     private boolean isMoveValid(String move) {
-        int boardSize = gameSession.getBoardSize();
+        int boardSize = gameSession.getBoardSize() +1;
 
         if (move.length() != 2) {
             return false;
         }
 
-        //validate it is a letter then a number
-
-
         // Extract column and row from the move
-        char columnChar = move.charAt(0); // First character is the column
+        // Check if the format is correct: letter followed by a digit
+        char columnChar = move.charAt(0);
+        char rowChar = move.charAt(1);
+        if (!Character.isLetter(columnChar) || !Character.isDigit(rowChar)) {
+            return false;
+        }
+
         // Convert the column letter to column index
         int column = columnChar - 'A' + 1;  // Adjust column: 'A' -> 1, 'B' -> 2, ..., 'G' -> 7
 
-
         int row;
         try {
-            row = Character.getNumericValue(move.charAt(1)) +1; // Second character is the row, add 1
-        } catch (NumberFormatException e) {
+            row = Character.getNumericValue(rowChar) +1; // Second character is the row, add 1
+        } catch (NumberFormatException e) {//mightnt need this
             view.displayMessage("....");
             return false; // If row is not a valid number
         }
@@ -85,13 +87,23 @@ public class GameController {
         }
 
         // Validate row range (0-based)
-        if (row < 0 || row >= boardSize) {
+        if (row < 0 || row > boardSize) {
             return false; // Row is out of valid range
+        }
+
+        // Check if the position is restricted
+        if (isRestrictedPosition(row, column)) {
+            return false;
         }
 
         // Check if the move is unoccupied
         return isUnoccupied(row, column);
 
+    }
+
+    private boolean isRestrictedPosition(int row, int column) {
+        // Middle box positions have even row index and even column index
+        return row % 2 == 0 && column % 2 == 0;
     }
 
     private boolean isUnoccupied(int row, int col) {

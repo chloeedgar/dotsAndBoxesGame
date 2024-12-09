@@ -113,9 +113,14 @@ public class GameSession {
     }
 
     private void updateBoard(int row, int column) {
-        System.out.println("Update board");
-        //ToDo
-        
+        // Determine whether to place a '|' (vertical line) or '-' (horizontal line)
+        if (row % 2 == 0) {
+            // Even rows correspond to vertical lines ('|')
+            board[row][column] = '|';
+        } else {
+            // Odd rows correspond to horizontal lines ('-')
+            board[row][column] = '-';
+        }
     }
 
     public int getBoardSize() {
