@@ -31,8 +31,7 @@ src/
  │   ├── GameController.java    // Manages game flow and interactions between model and view
  │
  ├── model/
- │   ├── GameState.java         // Handles board state, player turns, and scores
- │   ├── Player.java            // Represents a player
+ │   ├── GameSession.java         // Handles board state, player turns, and scores
  ├── utils/
  │   ├── BoardInitializer.java  // Creates and initializes the board
  │   ├── MoveValidator.java     // Ensures moves are valid
