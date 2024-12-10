@@ -2,7 +2,7 @@ package view;
 
 import java.util.Scanner;
 
-public class ConsoleView implements GameView{
+public class ConsoleView implements GameView {
 
     Scanner scanner = new Scanner(System.in);
 
@@ -10,10 +10,14 @@ public class ConsoleView implements GameView{
         System.out.println(message);
     }
 
-
-    @Override
-    public void renderWinner(int winnerPlayer) {
-
+    public void renderWinner(int player1Score, int player2Score) {
+        System.out.println();
+        System.out.print("Game over. ");
+        String result = (player1Score > player2Score) ? "Player 1 is the winner!"
+                : (player2Score > player1Score) ? "Player 2 is the winner!"
+                : "It's a tie!";
+        System.out.println(result);
+        System.out.println("Thanks for playing! Goodbye!");
     }
 
     public void renderBoard(char[][] board) {
@@ -25,7 +29,6 @@ public class ConsoleView implements GameView{
         }
     }
 
-
     @Override
     public void renderScores(int player1Score, int player2Score) {
         System.out.println("SCORE Player 1: " + player1Score +
@@ -33,11 +36,6 @@ public class ConsoleView implements GameView{
     }
 
     @Override
-    public String getPlayerInput() {
-        //ToDo
-        return null;
-    }
-
     public String getMove() {
         return scanner.nextLine().toUpperCase();
     }

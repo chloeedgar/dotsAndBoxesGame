@@ -4,10 +4,11 @@ package controller;
 import model.GameSession;
 import utils.MoveValidator;
 import view.ConsoleView;
+import view.GameView;
 
 public class GameController {
     private GameSession gameSession;
-    private ConsoleView view;
+    private GameView view;
 
 
     public GameController(GameSession gameSession, ConsoleView view) {
@@ -26,37 +27,39 @@ public class GameController {
 
             if (move.equals("Q")) {
                 view.displayMessage("Thanks for playing! Goodbye!");
-                gameSession.setGameOver(true);
                 break;
             }
 
             gameSession.makeMove(move);
             gameSession.switchPlayer();
-
             view.renderBoard(gameSession.getBoard());
-
         }
+
+        view.renderWinner(gameSession.getPlayer1Score(), gameSession.getPlayer2Score());
+
     }
 
+    /**
+     * Prompts the player for a valid move and validates the input.
+     *
+     * @return A valid move string or "Q" if the player quits.
+     */
     private String getValidMove() {
-        String move;
-        do {
-            view.displayMessage("Player " + (gameSession.getCurrentPlayer()) + ", input a move <column><row> (or 'Q' to quit): ");
-            move = view.getMove();
+        while (true) {
+            view.displayMessage("Player " + gameSession.getCurrentPlayer()
+                    + ", input a move <column><row> (or 'Q' to quit): ");
+            String move = view.getMove();
 
-            if (move.equals("Q")) {
-                return move;  // Player chooses to quit
+            if (move.equalsIgnoreCase("Q")) {
+                return move; // Player chooses to quit
             }
 
             if (MoveValidator.isMoveValid(move, gameSession.getBoard())) {
-                break;
+                return move; // Valid move
             }
 
             view.displayMessage("Invalid move. Please try again.");
-        } while (true);
-
-        return move;
+        }
     }
-
 
 }
