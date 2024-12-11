@@ -80,8 +80,8 @@ The game board for a 4x4 grid is initialized as follows:
 
 
 #### Board Initialization Rules:
-- **Top Row:** Alternates between spaces (`' '`) and letters (`A-G`) for column labels.
-- **Left Column:** Alternates between spaces (`' '`) and numbers (`0-6`) for row labels.
+- **Top Row:** Letters (`A-G`) for column labels.
+- **Left Column:** Numbers (`0-6`) for row labels.
 - **Inner Grid:** 
   - Dots (`*`) are placed at intersections in even rows and columns.
   - Empty spaces (`' '`) fill the gaps.
