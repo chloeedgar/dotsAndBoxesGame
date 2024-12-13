@@ -5,14 +5,14 @@ import utils.MoveValidator;
 
 import java.util.stream.IntStream;
 
-public class GameSession {
+public class GameState {
 
     private final int boardSize;
     private final int[] scores; // scores[0]=Player 1, scores[1]=Player 2
     private final char[][] board;
     private int currentPlayer;
 
-    public GameSession(int gridOfDotsSize) {
+    public GameState(int gridOfDotsSize) {
         this.boardSize = gridOfDotsSize * 2;
         this.board = BoardInitializer.initializeBoard(boardSize);
         this.scores = new int[2];

@@ -1,27 +1,27 @@
 package controller;
 
 
-import model.GameSession;
+import model.GameState;
 import utils.MoveValidator;
 import view.ConsoleView;
 import view.GameView;
 
 public class GameController {
-    private GameSession gameSession;
+    private GameState gameState;
     private GameView view;
 
 
-    public GameController(GameSession gameSession, ConsoleView view) {
-        this.gameSession = gameSession;
+    public GameController(GameState gameState, ConsoleView view) {
+        this.gameState = gameState;
         this.view = view;
     }
 
     public void startGame() {
         view.displayMessage("Welcome to Dots and Boxes!");
-        view.renderBoard(gameSession.getBoard());
+        view.renderBoard(gameState.getBoard());
 
-        while (!gameSession.isGameOver()) {
-            view.renderScores(gameSession.getPlayer1Score(), gameSession.getPlayer2Score());
+        while (!gameState.isGameOver()) {
+            view.renderScores(gameState.getPlayer1Score(), gameState.getPlayer2Score());
 
             String move = getValidMove();
 
@@ -30,12 +30,12 @@ public class GameController {
                 break;
             }
 
-            gameSession.makeMove(move);
-            gameSession.switchPlayer();
-            view.renderBoard(gameSession.getBoard());
+            gameState.makeMove(move);
+            gameState.switchPlayer();
+            view.renderBoard(gameState.getBoard());
         }
 
-        view.renderWinner(gameSession.getPlayer1Score(), gameSession.getPlayer2Score());
+        view.renderWinner(gameState.getPlayer1Score(), gameState.getPlayer2Score());
 
     }
 
@@ -46,7 +46,7 @@ public class GameController {
      */
     private String getValidMove() {
         while (true) {
-            view.displayMessage("Player " + gameSession.getCurrentPlayer()
+            view.displayMessage("Player " + gameState.getCurrentPlayer()
                     + ", input a move <column><row> (or 'Q' to quit): ");
             String move = view.getMove();
 
@@ -54,7 +54,7 @@ public class GameController {
                 return move; // Player chooses to quit
             }
 
-            if (MoveValidator.isMoveValid(move, gameSession.getBoard())) {
+            if (MoveValidator.isMoveValid(move, gameState.getBoard())) {
                 return move; // Valid move
             }
 

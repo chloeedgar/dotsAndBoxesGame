@@ -1,5 +1,5 @@
 import controller.GameController;
-import model.GameSession;
+import model.GameState;
 import view.ConsoleView;
 
 public class DotsAndBoxes {
@@ -8,9 +8,9 @@ public class DotsAndBoxes {
 
         int gridOfDotsSize = 4; // 4 x 4 of stars
 
-        GameSession gameSession = new GameSession(gridOfDotsSize);
+        GameState gameState = new GameState(gridOfDotsSize);
         ConsoleView consoleView = new ConsoleView();
-        GameController gameController = new GameController(gameSession, consoleView);
+        GameController gameController = new GameController(gameState, consoleView);
 
         gameController.startGame();
 
