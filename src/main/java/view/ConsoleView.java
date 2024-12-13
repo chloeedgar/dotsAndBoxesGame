@@ -21,11 +21,14 @@ public class ConsoleView implements GameView {
     }
 
     public void renderBoard(char[][] board) {
+        StringBuilder output = new StringBuilder();
+
         for (char[] row : board) {
             for (char cell : row) {
-                System.out.print(cell);
+                output.append(cell);
             }
-            System.out.println();
+            output.append('\n');
+            System.out.println(output);
         }
     }
 
